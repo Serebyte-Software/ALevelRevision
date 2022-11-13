@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			Revise Physics
+		</title>
+		
+		<link rel="stylesheet" type="text/css" href="main.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<script>
+			//get quiz array from query string
+			var queryString = window.location.href;
+			var startIndex = queryString.lastIndexOf("quiz=");
+			
+			//check start index is valid
+			if(startIndex != -1){
+				//calculate start of index
+				startIndex += 5;
+				var pathString = queryString.substr(startIndex);
+				
+				//check if multiple parts of substring
+				if(pathString.indexOf("&") != -1){
+					pathString = pathString.substr(0, pathString.indexOf("&"));
+				};
+				
+				console.log(pathString);
+				
+				//include script
+				var quizScript = document.createElement("script");
+				
+				//quiz script
+				quizScript.src = pathString;
+				document.head.appendChild(quizScript);
+				
+				//start run quiz
+				quizScript.onload = ()=>{
+					runQuiz();
+				};
+			};
+		</script>
+	</head>
+	
+	<body>
+		<script src="createHeader.js"></script>	
+		<center>
+			<section>
+				<h2 id="quizTitle"></h2>
+				
+				<br/>
+				
+				<p id="questionText"></p>
+				
+				<br/>
+				
+				<input id="answerText"></input>
+				
+				<br/>
+	
+				<br/>
+				
+				<button id="revealButton">Reveal Answers</button>
+				
+				<button id="nextButton">Next Question</button>
+			</section>
+		</center>
+		
+		<script>
+			//run quiz
+			function runQuiz(){
+				//get all elements
+				var quizTitle = document.getElementById("quizTitle");
+				var questionText = document.getElementById("questionText");
+				var answerText = document.getElementById("answerText");
+				var revealButton = document.getElementById("revealButton");
+				var nextButton = document.getElementById("nextButton");
+				
+				//create global variable
+				var score = 0;
+				var questionNumber = 0;
+				var correctAnswers = [];
+				
+				//render question text
+				function renderQuestionText(){
+					//render question text
+					var questionStr = "";
+					var answerNumber = 0;
+					
+					//iterate
+					for(i = 0; i < quiz[questionNumber][0].length; i++){
+						//check for blank space
+						if(quiz[questionNumber][0][i] == "`"){
+							//check answer
+							if(correctAnswers[answerNumber] == 1){
+								//draw correct answer
+								questionStr += quiz[questionNumber][answerNumber + 2];
+							} else {
+								//draw spaces
+								var j;
+								
+								for(j = 0; j < quiz[questionNumber][answerNumber + 2].length; j++){
+									questionStr += "_";
+								};								
+							};
+						
+							//increment answer number
+							answerNumber += 1;
+						} else {
+							questionStr += quiz[questionNumber][0][i];
+						};
+					};
+					
+					//question string
+					questionText.innerHTML = questionStr;
+				};
+				
+				//start question
+				function startQuestion(questionNum){
+					//set question number
+					questionNumber = questionNum;
+				
+					//format correct answers
+					correctAnswers = [];
+					
+					for(i = 2; i < quiz[questionNumber].length; i++){
+						correctAnswers.push(0);
+					};
+					
+					//render question text
+					renderQuestionText();
+					
+					//hide next button
+					nextButton.hidden = true;
+					
+					//show reveal answers button
+					revealButton.hidden = false;
+					
+					//select answer text
+					answerText.select();
+				};
+				
+				//start quiz
+				function startQuiz(){
+					//set quiz title
+					quizTitle.innerHTML = title;
+					
+					//reset score
+					score = 0;
+					
+					//start first question
+					startQuestion(0);
+				};
+				
+				//sanitised compare
+				function sanitisedCompare(str1, str2){
+					//get lower case strings
+					var sstr1 = str1.toLowerCase();
+					var sstr2 = str2.toLowerCase();
+					
+					//remove non alphanumeric characters
+					sstr1 = sstr1.replace(/\W/g, "");
+					sstr2 = sstr2.replace(/\W/g, "");
+					
+					if(sstr1 == sstr2){
+						return true;
+					} else {
+						return false;
+					};
+				};
+			
+				//add answer text function
+				answerText.onkeyup = (e)=>{
+					//check key code
+					if(e.keyCode == 13){
+						//check if reveal button is visible
+						if(revealButton.hidden == false){
+							revealButton.click();
+						} else if(nextButton.hidden == false){
+							nextButton.click();
+						};
+					};
+					
+					//check for comparison with any valid answers
+					for(i = 2; i < quiz[questionNumber].length; i++){
+						//check if answer is not already correct
+						if(correctAnswers[i - 2] == 0){
+							//check if correct
+							if(sanitisedCompare(answerText.value, quiz[questionNumber][i])){
+								//correct answers
+								correctAnswers[i - 2] = 1;
+								renderQuestionText();
+								answerText.value = "";
+								
+								//increment score
+								score += 1;
+								
+								//check if all answers are correct
+								var numberOfCorrectAnswers = 0;
+								var k;
+								
+								for(k = 2; k < quiz[questionNumber].length; k++){
+									if(correctAnswers[k - 2] == 1){
+										numberOfCorrectAnswers += 1;
+									};
+								};
+								
+								if(numberOfCorrectAnswers == quiz[questionNumber].length - 2){
+									//hide reveal answers button
+									revealButton.hidden = true;
+									nextButton.hidden = false;
+								};
+								
+								break;
+							};
+						};
+					};
+				};
+				
+				//show score
+				function showScore(){
+					//total score
+					var totalScore = 0;
+					
+					for(i = 0; i < quiz.length; i++){
+						totalScore += (quiz[i].length - 2);
+					};
+					
+					//score str
+					var scoreStr = "You completed the Quiz! You scored " + score + " out of " + totalScore + ".<br/><br/><br/><a href=\"index.html\"><button>Return to Menu</button></a>";
+					questionText.innerHTML = scoreStr;
+				
+					//hidden
+					nextButton.hidden = true;
+					revealButton.hidden = true;
+					answerText.hidden = true;
+				};
+				
+				//next button
+				nextButton.onclick = ()=>{
+					//check if there are any questions left
+					if(questionNumber < quiz.length - 1){
+						//start next question
+						startQuestion(questionNumber + 1);
+					} else {
+						//show score
+						showScore();
+					};					
+				};
+				
+				//reveal answers
+				revealButton.onclick = ()=>{
+					//set all questions to correct
+					for(i = 0; i < correctAnswers.length; i++){
+						correctAnswers[i] = 1;
+					};
+					
+					//render text
+					renderQuestionText();
+					
+					//hide reveal answer button
+					revealButton.hidden = true;
+					
+					//show next question button
+					nextButton.hidden = false;
+				};
+			
+				//start quiz
+				startQuiz();
+			};
+		</script>
+		
+		<script src="createFooter.js"></script>
+	</body>
+</html>
