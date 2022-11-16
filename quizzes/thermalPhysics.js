@@ -11,8 +11,8 @@ var quiz = [
 		"The thermal energy of a system is related to the average ` energy of the particles in said system - a high ` is caused by particles in the system moving around and ` very quickly.",
 		"none",
 		"kinetic",
-		"vibrating",
-		"temperature"
+		"temperature",
+		"vibrating"
 	],
 	
 	[
