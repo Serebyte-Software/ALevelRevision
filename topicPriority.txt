@@ -1,0 +1,30 @@
+Topic priority:
+
+Physics:
+Thermal Physics
+Gravitational and Electric Fields
+Further Mechanics
+Waves
+Quantum Physics
+Materials
+Electricity
+Particle Physics
+Mechanics
+Capacitors
+Magnetic Fields
+Nuclear Physics
+Astrophysics
+
+Computer Science
+Data structures
+Algorithms
+Systems Software
+Components of a Computer
+Networks and Web Technologies
+Exchanging Data
+Software Development
+Data Types
+Boolean Algebra
+Legal, Moral, Ethical and Cultural Issues
+Computational Thinking
+Programming Techniques

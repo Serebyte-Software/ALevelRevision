@@ -49,7 +49,15 @@
 				
 				<br/>
 				
+				<canvas id="questionTime" style="background-color: grey"></canvas>
+				
 				<p id="questionText"></p>
+				
+				<br/>
+				
+				<img id="questionImage"></img>
+				
+				<br/>
 				
 				<br/>
 				
@@ -71,14 +79,19 @@
 				//get all elements
 				var quizTitle = document.getElementById("quizTitle");
 				var questionText = document.getElementById("questionText");
+				var questionImage = document.getElementById("questionImage");
 				var answerText = document.getElementById("answerText");
 				var revealButton = document.getElementById("revealButton");
 				var nextButton = document.getElementById("nextButton");
+				var questionTime = document.getElementById("questionTime");
+				var timeCtx = questionTime.getContext("2d");
 				
 				//create global variable
 				var score = 0;
 				var questionNumber = 0;
 				var correctAnswers = [];
+				var remainingTime;
+				const timePerAnswer = 5;
 				
 				//render question text
 				function renderQuestionText(){
@@ -99,7 +112,7 @@
 								var j;
 								
 								for(j = 0; j < quiz[questionNumber][answerNumber + 2].length; j++){
-									questionStr += "_";
+									questionStr += "#";
 								};								
 							};
 						
@@ -112,6 +125,40 @@
 					
 					//question string
 					questionText.innerHTML = questionStr;
+				};
+				
+				//decrement time
+				function decrementTime(){
+					//check if still running
+					if(nextButton.hidden == true){
+						//subtract remaining time
+						remainingTime -= 0.05;
+					
+						//correct time
+						if(remainingTime <= 0){
+							//set remaining time to zero
+							remainingTime = 0;
+							
+							//set all answers to correct
+							let answerCount = 0;
+							
+							for(answerCount = 0; answerCount < correctAnswers.length; answerCount++){
+								correctAnswers[answerCount] = 1;
+							};
+							
+							//redraw text
+							renderQuestionText();
+						} else {
+							//call self again
+							setTimeout(decrementTime, 50);
+						};
+					
+						//redraw canvas
+						questionTime.width = questionTime.parentElement.offsetWidth * 0.8;
+						questionTime.height = 16;
+						timeCtx.fillStyle = "green";
+						timeCtx.fillRect(0, 0, (remainingTime / (correctAnswers.length * timePerAnswer)) * questionTime.width, questionTime.height);
+					};
 				};
 				
 				//start question
@@ -129,6 +176,15 @@
 					//render question text
 					renderQuestionText();
 					
+					//check if there is an image
+					if(quiz[questionNumber][1] == "none"){
+						//hide image
+						questionImage.hidden = true;
+					} else {
+						questionImage.src = quiz[questionNumber][1];
+						questionImage.hidden = false;
+					};
+					
 					//hide next button
 					nextButton.hidden = true;
 					
@@ -137,6 +193,12 @@
 					
 					//select answer text
 					answerText.select();
+					
+					//set time
+					remainingTime = (quiz[questionNumber].length - 2) * timePerAnswer;
+					
+					//start timer
+					setTimeout(decrementTime, 50);
 				};
 				
 				//start quiz
@@ -229,10 +291,12 @@
 					var scoreStr = "You completed the Quiz! You scored " + score + " out of " + totalScore + ".<br/><br/><br/><a href=\"index.html\"><button>Return to Menu</button></a>";
 					questionText.innerHTML = scoreStr;
 				
-					//hidden
+					//hide and show components
 					nextButton.hidden = true;
 					revealButton.hidden = true;
+					questionImage.hidden = true;
 					answerText.hidden = true;
+					questionTime.hidden = true;
 				};
 				
 				//next button

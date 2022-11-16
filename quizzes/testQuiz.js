@@ -2,7 +2,7 @@ var title = "Test Quiz"
 var quiz = [
 	[
 		"The capital city of the UK is `. The capital city of Spain is `. The capital city of the US is ` `.",
-		"./res/test.bmp",
+		"./images/test.bmp",
 		"London",
 		"Madrid",
 		"Washington",

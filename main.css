@@ -50,10 +50,30 @@ h2 {
 
 h3 {
 	color: white;
+	font-weight: 500;
+}
+
+h4 {
+	color: white;
 }
 
 p {
 	color: white;
+}
+
+/* lists */
+ul {
+	text-align: left;
+}
+
+/* button */
+button {
+	font-size: 14px;
+	cursor: default;
+}
+
+button:hover {
+	cursor: pointer;
 }
 
 /* custom classes */
