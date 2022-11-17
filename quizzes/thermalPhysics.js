@@ -27,7 +27,7 @@ var quiz = [
 		"Particles in a system also have another form of energy - ` energy. This is different to kinetic energy, since it is the energy particles have due to their ` relative to one another.",
 		"none",
 		"potential",
-		"kinetic"
+		"position"
 	],
 	
 	[
@@ -294,7 +294,7 @@ var quiz = [
 		"x",
 		"temperature",
 		"T1",
-		"T2"
+		"T3"
 	],
 
 	[
