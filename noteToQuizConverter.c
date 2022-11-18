@@ -7,6 +7,8 @@
 
 #define STR_LENGTH 2048
 
+#define MAX_KEYWORDS 64
+
 //entry point
 int main(){
 	//ask for quiz title

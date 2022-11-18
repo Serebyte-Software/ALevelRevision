@@ -49,8 +49,8 @@ var quiz = [
 	],
 
 	[
-		"A ` ` is one that occupies a sphere around a central point. All the field lines will meet at said central point. The strength of a radial field ` with the distance from the centre, which can easily be seen on a diagram, as the lines get further apart (less `) the further out you go.<br/><br/><img src=\"./../images/radialGravitationalField.bmp\"></img>",
-		"none",
+		"A ` ` is one that occupies a sphere around a central point. All the field lines will meet at said central point. The strength of a radial field ` with the distance from the centre, which can easily be seen on a diagram, as the lines get further apart (less `) the further out you go.",
+		"./images/radialGravitationalField.bmp",
 		"radial",
 		"field",
 		"decreases",
@@ -58,8 +58,8 @@ var quiz = [
 	],
 
 	[
-		"A ` ` is one in which all the field lines are evenly spaced and point in the same direction. Because the lines are evenly spaced, the ` of the force per unit mass is the same at all points in the field. Because the directions of the field lines are all the same, the ` of the force is constant throughout the field. The Earth's surface can be modelled as a uniform field at low altitudes.<br/><br/><img src=\"./../images/uniformGravitationalField.bmp\"></img>",
-		"none",
+		"A ` ` is one in which all the field lines are evenly spaced and point in the same direction. Because the lines are evenly spaced, the ` of the force per unit mass is the same at all points in the field. Because the directions of the field lines are all the same, the ` of the force is constant throughout the field. The Earth's surface can be modelled as a uniform field at low altitudes.",
+		"./images/uniformGravitationalField.bmp",
 		"uniform",
 		"field",
 		"magnitude",
